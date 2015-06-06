@@ -1,2 +1,18 @@
-
-<h1>Hello World</h1>
+<!DOCTYPE html>
+<html lang="en-US" ng-app="weatherz">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Weatherz Application</title>
+  </head>
+  <body>
+    <div class="container">
+      <div ng-controller="WeatherCtrl as weather" class="app">
+        <h1 class="temp">{{weather.temp_f}}ºF</h1>
+      </div>
+    </div>
+  </body>
+  <script src="lib/build.js"></script>
+  <script src="js/main.js"></script>
+</html>

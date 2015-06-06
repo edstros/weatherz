@@ -1,4 +1,33 @@
 'use strict';
 
-var API_URL = 'http://api.wunderground.com/api/459997bb99f562c6/conditions/geolookup/forecast10day/q/';
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9qcy9tYWluLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQUEsSUFBSSxPQUFPLEdBQUcsd0ZBQXdGLENBQUMiLCJmaWxlIjoic3JjL2pzL21haW4uanMiLCJzb3VyY2VzQ29udGVudCI6WyJ2YXIgQVBJX1VSTCA9ICdodHRwOi8vYXBpLnd1bmRlcmdyb3VuZC5jb20vYXBpLzQ1OTk5N2JiOTlmNTYyYzYvY29uZGl0aW9ucy9nZW9sb29rdXAvZm9yZWNhc3QxMGRheS9xLyc7XG4iXX0=
+var API_URL = 'http://api.wunderground.com/api/459997bb99f562c6/conditions/geolookup/q/';
+
+var weatherz = angular.module('weatherz', []);
+
+weatherz.controller('WeatherCtrl', function ($http) {
+  var vm = this;
+  navigator.geolocation.getCurrentPosition(function (location) {
+    //creating the location function; to be determined by lat and long; coord.latitude are in the json, but we're shortening it so that it can be appended to getJSON's data function; we'll use data to display weather by geoposition
+    var lat = location.coords.latitude;
+    var long = location.coords.longitude;
+    $http.get(API_URL + lat + ',' + long + '.json').success(function (data) {
+      console.log('do you see me?');
+      vm.temp_f = data.current_observation.temp_f;
+    });
+  });
+});
+/*
+ //difference from codepen is I need the window.onlead because the scripts are executing before the elements are loaded.
+var btnZipCode = document.querySelector('#btnZipCode'); //creates the button element using the id from the button input
+
+  btnZipCode.onclick = function() { //watches for the button click
+
+  var input = document.querySelector('#zipCode'); //takes the user's zip code input
+  var zipcode = input.value; //takes the value of the user imput, forms it so can be used in the json
+
+  getJSON(API_URL + zipcode + '.json', function(data) {
+    var span = document.querySelector('#temp'); //puts the formed data from var zipcode as a string, putting it in the span, which is at the end of the var API_URL
+    span.innerHTML = data.current_observation.temp_f; //HERE'S THE  WEATHER. SWEET JESUS.
+  });
+};*/
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9qcy9tYWluLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQUEsSUFBSSxPQUFPLEdBQUcsMEVBQTBFLENBQUM7O0FBSXZGLElBQUksUUFBUSxHQUFHLE9BQU8sQ0FBQyxNQUFNLENBQUMsVUFBVSxFQUFFLEVBQUUsQ0FBQyxDQUFDOztBQUVoRCxRQUFRLENBQUMsVUFBVSxDQUFDLGFBQWEsRUFBRSxVQUFTLEtBQUssRUFBRTtBQUNqRCxNQUFJLEVBQUUsR0FBRyxJQUFJLENBQUM7QUFDZCxXQUFTLENBQUMsV0FBVyxDQUFDLGtCQUFrQixDQUFDLFVBQVMsUUFBUSxFQUFFOztBQUM1RCxRQUFJLEdBQUcsR0FBRyxRQUFRLENBQUMsTUFBTSxDQUFDLFFBQVEsQ0FBQztBQUNuQyxRQUFJLElBQUksR0FBRyxRQUFRLENBQUMsTUFBTSxDQUFDLFNBQVMsQ0FBQztBQUNyQyxTQUFLLENBQ0YsR0FBRyxDQUFDLE9BQU8sR0FBRyxHQUFHLEdBQUcsR0FBRyxHQUFHLElBQUksR0FBRyxPQUFPLENBQUMsQ0FDekMsT0FBTyxDQUFDLFVBQVMsSUFBSSxFQUFFO0FBQ3hCLGFBQU8sQ0FBQyxHQUFHLENBQUMsZ0JBQWdCLENBQUMsQ0FBQztBQUM5QixRQUFFLENBQUMsTUFBTSxHQUFHLElBQUksQ0FBQyxtQkFBbUIsQ0FBQyxNQUFNLENBQUM7S0FFL0MsQ0FBQyxDQUFDO0dBQ0EsQ0FBQyxDQUFDO0NBQ0osQ0FBQyxDQUFDIiwiZmlsZSI6InNyYy9qcy9tYWluLmpzIiwic291cmNlc0NvbnRlbnQiOlsidmFyIEFQSV9VUkwgPSAnaHR0cDovL2FwaS53dW5kZXJncm91bmQuY29tL2FwaS80NTk5OTdiYjk5ZjU2MmM2L2NvbmRpdGlvbnMvZ2VvbG9va3VwL3EvJztcblxuXG5cbiAgdmFyIHdlYXRoZXJ6ID0gYW5ndWxhci5tb2R1bGUoJ3dlYXRoZXJ6JywgW10pO1xuXG53ZWF0aGVyei5jb250cm9sbGVyKCdXZWF0aGVyQ3RybCcsIGZ1bmN0aW9uKCRodHRwKSB7XG4gIHZhciB2bSA9IHRoaXM7XG4gIG5hdmlnYXRvci5nZW9sb2NhdGlvbi5nZXRDdXJyZW50UG9zaXRpb24oZnVuY3Rpb24obG9jYXRpb24pIHsgLy9jcmVhdGluZyB0aGUgbG9jYXRpb24gZnVuY3Rpb247IHRvIGJlIGRldGVybWluZWQgYnkgbGF0IGFuZCBsb25nOyBjb29yZC5sYXRpdHVkZSBhcmUgaW4gdGhlIGpzb24sIGJ1dCB3ZSdyZSBzaG9ydGVuaW5nIGl0IHNvIHRoYXQgaXQgY2FuIGJlIGFwcGVuZGVkIHRvIGdldEpTT04ncyBkYXRhIGZ1bmN0aW9uOyB3ZSdsbCB1c2UgZGF0YSB0byBkaXNwbGF5IHdlYXRoZXIgYnkgZ2VvcG9zaXRpb25cbiAgdmFyIGxhdCA9IGxvY2F0aW9uLmNvb3Jkcy5sYXRpdHVkZTtcbiAgdmFyIGxvbmcgPSBsb2NhdGlvbi5jb29yZHMubG9uZ2l0dWRlO1xuICAkaHR0cFxuICAgIC5nZXQoQVBJX1VSTCArIGxhdCArICcsJyArIGxvbmcgKyAnLmpzb24nKVxuICAgIC5zdWNjZXNzKGZ1bmN0aW9uKGRhdGEpIHtcbiAgICBjb25zb2xlLmxvZygnZG8geW91IHNlZSBtZT8nKTtcbiAgICB2bS50ZW1wX2YgPSBkYXRhLmN1cnJlbnRfb2JzZXJ2YXRpb24udGVtcF9mO1xuICAgIFxufSk7XG4gIH0pO1xufSk7XG4vKlxuIC8vZGlmZmVyZW5jZSBmcm9tIGNvZGVwZW4gaXMgSSBuZWVkIHRoZSB3aW5kb3cub25sZWFkIGJlY2F1c2UgdGhlIHNjcmlwdHMgYXJlIGV4ZWN1dGluZyBiZWZvcmUgdGhlIGVsZW1lbnRzIGFyZSBsb2FkZWQuXG52YXIgYnRuWmlwQ29kZSA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoJyNidG5aaXBDb2RlJyk7IC8vY3JlYXRlcyB0aGUgYnV0dG9uIGVsZW1lbnQgdXNpbmcgdGhlIGlkIGZyb20gdGhlIGJ1dHRvbiBpbnB1dFxuXG4gIGJ0blppcENvZGUub25jbGljayA9IGZ1bmN0aW9uKCkgeyAvL3dhdGNoZXMgZm9yIHRoZSBidXR0b24gY2xpY2tcblxuICB2YXIgaW5wdXQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKCcjemlwQ29kZScpOyAvL3Rha2VzIHRoZSB1c2VyJ3MgemlwIGNvZGUgaW5wdXRcbiAgdmFyIHppcGNvZGUgPSBpbnB1dC52YWx1ZTsgLy90YWtlcyB0aGUgdmFsdWUgb2YgdGhlIHVzZXIgaW1wdXQsIGZvcm1zIGl0IHNvIGNhbiBiZSB1c2VkIGluIHRoZSBqc29uXG5cbiAgZ2V0SlNPTihBUElfVVJMICsgemlwY29kZSArICcuanNvbicsIGZ1bmN0aW9uKGRhdGEpIHtcbiAgICB2YXIgc3BhbiA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoJyN0ZW1wJyk7IC8vcHV0cyB0aGUgZm9ybWVkIGRhdGEgZnJvbSB2YXIgemlwY29kZSBhcyBhIHN0cmluZywgcHV0dGluZyBpdCBpbiB0aGUgc3Bhbiwgd2hpY2ggaXMgYXQgdGhlIGVuZCBvZiB0aGUgdmFyIEFQSV9VUkxcbiAgICBzcGFuLmlubmVySFRNTCA9IGRhdGEuY3VycmVudF9vYnNlcnZhdGlvbi50ZW1wX2Y7IC8vSEVSRSdTIFRIRSAgV0VBVEhFUi4gU1dFRVQgSkVTVVMuXG4gIH0pO1xufTsqL1xuXG4iXX0=
